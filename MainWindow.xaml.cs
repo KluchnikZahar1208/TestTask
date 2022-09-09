@@ -17,6 +17,7 @@ using System.IO;
 using static TestTask.Model.User;
 using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
+using TestTask.Model;
 
 namespace TestTask
 {
@@ -28,20 +29,46 @@ namespace TestTask
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void btnReadJSON_Click(object sender, RoutedEventArgs e)
-        {
-            var path = @"E:\Универ\TestTask\TestTask\day1.json";
-            var json = File.ReadAllText(path);
-            //Root root = JsonConvert.DeserializeObject<Root>(json);
-            List<Root> roots = JsonConvert.DeserializeObject<List<Root>>(json);
-            foreach(Root root in roots)
+            List<Root> roots = new List<Root>();
+            List<PersonInfo> personsInfo = new List<PersonInfo>();
+            var steps = new List<List<int>>();
+            //users.Add(new List<int>());
+            //users[0].Add(0);
+            for(int i = 1; i <= 30; i++)
             {
-                MessageBox.Show(root.User);
+                var path = $"E:\\Универ\\TestTask\\TestTask\\day{i}.json";
+                var json = File.ReadAllText(path);
+                roots = JsonConvert.DeserializeObject<List<Root>>(json);
+                
+                foreach(var root in roots)
+                {
+                    PersonInfo person = new PersonInfo(root.User, root.Steps);
+
+                    if (!personsInfo.Exists(x => x.Name == root.User))
+                    {
+                        personsInfo.Add(person);
+                        steps.Add(new List<int>());
+                        
+                    }
+                    else
+                    {
+                        personsInfo[personsInfo.FindIndex(x => x.Name==root.User)].AvgSteps += root.Steps;
+                    }
+                    steps[personsInfo.FindIndex(x => x.Name == root.User)].Add(root.Steps);
+                }
+                    
+                
+            }
+            for (int i = 0; i < personsInfo.Count; i++)
+            {
+                personsInfo[i].AvgSteps /= steps[i].Count;
+                MessageBox.Show(String.Join(", ", steps[i]));
             }
             
+            dgUsers.ItemsSource = personsInfo;
+
         }
-        private void read
+
+       
     }
 }

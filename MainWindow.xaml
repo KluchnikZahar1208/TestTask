@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnReadJSON" Width="80" Height="30" Content="Read JSON" Click="btnReadJSON_Click"/>
+        <DataGrid Name="dgUsers" AutoGenerateColumns="False" Margin="5,3,494,-3">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="User" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Step" Binding="{Binding AvgSteps}" />
+               
+
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
