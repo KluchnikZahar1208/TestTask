@@ -18,6 +18,7 @@ using static TestTask.Model.User;
 using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
 using TestTask.Model;
+using ScottPlot;
 
 namespace TestTask
 {
@@ -26,15 +27,17 @@ namespace TestTask
     /// </summary>
     public partial class MainWindow : Window
     {
+        const int COUNTDAYS = 30;
+        List<Root> roots = new List<Root>();
+        List<PersonInfo> personsInfo = new List<PersonInfo>();
+        List<List<double>> steps = new List<List<double>>();
         public MainWindow()
         {
             InitializeComponent();
-            List<Root> roots = new List<Root>();
-            List<PersonInfo> personsInfo = new List<PersonInfo>();
-            var steps = new List<List<int>>();
-            //users.Add(new List<int>());
-            //users[0].Add(0);
-            for(int i = 1; i <= 30; i++)
+            
+            
+            
+            for(int i = 1; i <= COUNTDAYS; i++)
             {
                 var path = $"E:\\Универ\\TestTask\\TestTask\\day{i}.json";
                 var json = File.ReadAllText(path);
@@ -47,12 +50,20 @@ namespace TestTask
                     if (!personsInfo.Exists(x => x.Name == root.User))
                     {
                         personsInfo.Add(person);
-                        steps.Add(new List<int>());
+                        steps.Add(new List<double>());
                         
                     }
                     else
                     {
                         personsInfo[personsInfo.FindIndex(x => x.Name==root.User)].AvgSteps += root.Steps;
+                        if (personsInfo[personsInfo.FindIndex(x => x.Name == root.User)].MaxCountSteps < root.Steps)
+                        {
+                            personsInfo[personsInfo.FindIndex(x => x.Name == root.User)].MaxCountSteps = root.Steps;
+                        }
+                        if (personsInfo[personsInfo.FindIndex(x => x.Name == root.User)].MinCountSteps > root.Steps)
+                        {
+                            personsInfo[personsInfo.FindIndex(x => x.Name == root.User)].MinCountSteps = root.Steps;
+                        }
                     }
                     steps[personsInfo.FindIndex(x => x.Name == root.User)].Add(root.Steps);
                 }
@@ -62,13 +73,31 @@ namespace TestTask
             for (int i = 0; i < personsInfo.Count; i++)
             {
                 personsInfo[i].AvgSteps /= steps[i].Count;
-                MessageBox.Show(String.Join(", ", steps[i]));
             }
             
             dgUsers.ItemsSource = personsInfo;
-
+            
+            
         }
 
-       
+        private void dgUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<double> listDays = new List<double>();
+            for (int i = 1; i <= steps[dgUsers.SelectedIndex].Count; i++)
+            {
+                listDays.Add(i);
+            }
+            WpfPlot1.Plot.Clear();
+            double[] days = listDays.ToArray();
+            double[] step = steps[dgUsers.SelectedIndex].ToArray();
+
+            dgUsers
+            dgUsers.RowBackground = new SolidColorBrush(Colors.Orange);
+
+            WpfPlot1.Plot.AddScatterLines(days, step);
+            WpfPlot1.Refresh();
+
+        }
     }
+   
 }

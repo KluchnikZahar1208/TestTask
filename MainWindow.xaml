@@ -3,18 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TestTask"
+        
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid Name="dgUsers" AutoGenerateColumns="False" Margin="5,3,494,-3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="199*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Name="dgUsers" AutoGenerateColumns="False" Margin="5,3,490,-3" SelectionChanged="dgUsers_SelectionChanged" RowBackground="White">
             <DataGrid.Columns>
 
-                <DataGridTextColumn Header="User" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Step" Binding="{Binding AvgSteps}" />
-               
+                <DataGridTextColumn Header="Users" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Steps" Binding="{Binding AvgSteps}" />
+                <DataGridTextColumn Header="Max Steps" Binding="{Binding MaxCountSteps}" />
+                <DataGridTextColumn Header="Min Steps" Binding="{Binding MinCountSteps}" />
 
             </DataGrid.Columns>
+
         </DataGrid>
+        <WpfPlot Name="WpfPlot1" Grid.ColumnSpan="2" Margin="330,3,0,0"  />
+
     </Grid>
 </Window>
