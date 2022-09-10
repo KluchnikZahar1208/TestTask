@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
 using TestTask.Model;
 using ScottPlot;
+using System.Data;
 
 namespace TestTask
 {
@@ -91,12 +92,20 @@ namespace TestTask
             double[] days = listDays.ToArray();
             double[] step = steps[dgUsers.SelectedIndex].ToArray();
 
-            dgUsers
-            dgUsers.RowBackground = new SolidColorBrush(Colors.Orange);
-
             WpfPlot1.Plot.AddScatterLines(days, step);
             WpfPlot1.Refresh();
 
+        }
+
+        private void dgUsers_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            
+            PersonInfo product = (PersonInfo)e.Row.DataContext;
+
+            if (product.AvgSteps * 1.2 < product.MaxCountSteps || product.AvgSteps * 0.8 > product.MinCountSteps)
+                e.Row.Background = new SolidColorBrush(Colors.Orange);
+            else
+                e.Row.Background = new SolidColorBrush(Colors.White);
         }
     }
    

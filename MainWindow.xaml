@@ -11,7 +11,7 @@
             <ColumnDefinition Width="199*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid Name="dgUsers" AutoGenerateColumns="False" Margin="5,3,490,-3" SelectionChanged="dgUsers_SelectionChanged" RowBackground="White">
+        <DataGrid Name="dgUsers" AutoGenerateColumns="False" Margin="5,3,490,-3" SelectionChanged="dgUsers_SelectionChanged" RowBackground="White" LoadingRow="dgUsers_LoadingRow" IsReadOnly="True">
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Users" Binding="{Binding Name}" />
