@@ -36,8 +36,6 @@ namespace TestTask
         {
             InitializeComponent();
             
-            
-            
             for(int i = 1; i <= COUNTDAYS; i++)
             {
                 var path = $"E:\\Универ\\TestTask\\TestTask\\day{i}.json";
@@ -106,6 +104,16 @@ namespace TestTask
                 e.Row.Background = new SolidColorBrush(Colors.Orange);
             else
                 e.Row.Background = new SolidColorBrush(Colors.White);
+        }
+
+        private void CovertJSON_Click(object sender, RoutedEventArgs e)
+        {
+            PersonInfo personInfo = (PersonInfo)dgUsers.SelectedItem;
+            InfoJSON infoJSON = new InfoJSON(personInfo.Name.ToString(), dgUsers.SelectedIndex.ToString(), roots[roots.FindIndex(x => x.User == personInfo.Name)].Status, personInfo.AvgSteps, personInfo.MaxCountSteps, personInfo.MinCountSteps);
+            MessageBox.Show(infoJSON.ToJSON());
+            //MessageBox.Show(dgUsers.SelectedIndex.ToString());
+            //MessageBox.Show(roots[roots.FindIndex(x => x.User == personInfo.Name)].Status);
+
         }
     }
    
