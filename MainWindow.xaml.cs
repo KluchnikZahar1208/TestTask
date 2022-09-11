@@ -110,7 +110,7 @@ namespace TestTask
         {
             PersonInfo personInfo = (PersonInfo)dgUsers.SelectedItem;
             InfoJSON infoJSON = new InfoJSON(personInfo.Name.ToString(), dgUsers.SelectedIndex.ToString(), roots[roots.FindIndex(x => x.User == personInfo.Name)].Status, personInfo.AvgSteps, personInfo.MaxCountSteps, personInfo.MinCountSteps);
-            MessageBox.Show(infoJSON.ToJSON());
+            infoJSON.ToJSON();
             //MessageBox.Show(dgUsers.SelectedIndex.ToString());
             //MessageBox.Show(roots[roots.FindIndex(x => x.User == personInfo.Name)].Status);
 

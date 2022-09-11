@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 
@@ -26,11 +28,17 @@ namespace TestTask.Model
             this.MaxCountSteps = maxCount;
             this.MinCountSteps = minCount;
         }
-        public string ToJSON()
+        public void ToJSON()
         {
-           return JsonSerializer.Serialize(this);
-            
-           // File.WriteAllText(@"E:\Универ\TestTask\TestTask\PersonsInfo", json);
+           string json = JsonSerializer.Serialize(this,options);
+           File.WriteAllText(@"E:\Универ\TestTask\TestTask\PersonsInfo.json", json);
         }
+        private static readonly JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            AllowTrailingCommas = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+            WriteIndented = true
+        };
     }
 }
